@@ -96,7 +96,7 @@ const UseEffectComponent = () => {
             </nav>
             <h1>
                 { resource.charAt(0).toUpperCase() + resource.slice(1) } 
-                { !!resource && `url link(https://jsonplaceholder.typicode.com/${resource})` }
+                { !!resource && ` url link(https://jsonplaceholder.typicode.com/${resource})` }
             </h1>
             <div>
                 {
