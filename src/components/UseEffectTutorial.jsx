@@ -24,7 +24,7 @@ const borderStyle = {
 const UseEffectComponent = () => {
     const [ resource, setResource ] = useState("");
     const [ items, setItems ] = useState([]);
-
+    
     // equivalent to componentDidMount in class-based lifecycle
     // useEffect accepts a second argument which is a list of  
     // state for example or options. so whenever the state of resource is change
@@ -52,7 +52,6 @@ const UseEffectComponent = () => {
                 // setting the items to the state
                 setItems(jsonResponse);
             };
-
             // useEffect cleanUp (important) (only accepts function)
             return () => {
                 console.log("Cleanup")
@@ -99,13 +98,13 @@ const UseEffectComponent = () => {
                 { !!resource && ` url link(https://jsonplaceholder.typicode.com/${resource})` }
             </h1>
             <div>
-                {
+                { 
                     items.length > 0 ? items.map((item, index) => {
                         // put key={index} always when iterating tags inside jsx file
                         return <pre key={index}>
                             { JSON.stringify(item) }
                         </pre>
-                    }): null
+                    }): <p>Cleared...</p>
                 }
             </div>
         </div>
