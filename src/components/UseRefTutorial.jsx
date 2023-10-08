@@ -18,6 +18,7 @@ const paraDivStyle = {
 
 const UseRefComponent = () => {
     const [ name, setName ] = useState("");
+    const [ generatedText, setGeneratedText ] = useState("");
     const renderCount = useRef(0); // you can use destructuring here { current }
     const focusOnInput = useRef();
     const generate = useRef();
@@ -45,19 +46,28 @@ const UseRefComponent = () => {
         // const input = document.getElementById("myName")
         // input.focus();
         // this is only possible because `ref` is attached to the focusInput variable
-        // see line `85`
+        // see line `85` !adjusted
     };
 
     // generate some text by clicking
-    // attached on line 121
+    // attached on line 121 !adjusted
     const generateRef = () => {
-        // made possible by attaching variable `generate` to `ref` attribute in line `96`
+        const newText = `Hello ${ name } -> from 'click generate button'`;
+        // get the length of the text then multiply it by your chosen number to calculate it's width
+        const dynamicWidth = newText.length * 8;
+        // set the text
+        setGeneratedText(newText)
 
+        // made possible by attaching variable `generate` to `ref` attribute in line `96` !adjusted
         if (generate.current) {
-            generate.current.value = "Text generated from `Click me to generate`"
+            // adjust the width in pixels based on generated text
+            generate.current.style.width = `${ dynamicWidth }px`;
+
+            // no need to use this (generate.current.value = newText)
+            // because I have a generateText state and can easily passed that on the value attribute of input tag
         };
     }
-    
+
     useEffect(() => {
         // increment render count whenever there's a change 
         // in this component
@@ -67,7 +77,7 @@ const UseRefComponent = () => {
         // instead of useState to avoid re-rendering.
         // using object assignment to the current state of name
         lastStored.current = name
-    }, [name]);
+    }, [ name ]);
     
     return (
         <div>
@@ -82,28 +92,30 @@ const UseRefComponent = () => {
                         // focus button is clicked using useRef and ref attribute of html
                         // when using ref always attached the useRef instance and not your
                         // modified function for event(such as onClick )
-                        ref={focusOnInput}
+                        ref={ focusOnInput }
                         id="myName"
-                        value={name}
+                        value={ name }
                         type="text"
-                        onChange={setNameEvent}
+                        onChange={ setNameEvent }
                         placeholder="What's your name?"
                     />
                 </div>
                 <div>
-                    <label htmlFor="someValue">Just click generate don't enter anything here: </label>
-                    <input 
-                        ref={generate}
-                        style={{width: "270px"}}
+                    <label htmlFor="someValue" style={{ marginTop: "10px" }}>Click generate button: </label>
+                    <input
+                        ref={ generate }
+                        style={{ marginTop:"10px" }}
                         id="someValue"
-                        type="text" 
-                        placeholder="Don't type anything here" 
+                        type="text"
+                        value={ generatedText }
+                        placeholder="Click Generate Button"
+                        readOnly 
                     />
                 </div>
                 <div>
-                    <p>Last stored input was: {lastStored.current}</p>
+                    <p>Last stored input was: { lastStored.current }</p>
                 </div>
-                <div style={paraDivStyle}>
+                <div style={ paraDivStyle }>
                     <p 
                         style={{
                             fontSize: "large", 
@@ -112,13 +124,13 @@ const UseRefComponent = () => {
                     >
                         Hello {name}!
                     </p>
-                    <span>UseRef Count: {renderCount.current}</span>
+                    <span>UseRef Count: { renderCount.current }</span>
                 </div>
                 <div>
-                    <button onClick={focus} style={{cursor:"pointer", marginRight: "10px"}}>
+                    <button onClick={focus} style={{ cursor:"pointer", marginRight: "10px" }}>
                         Focus on Howdy!
                     </button>
-                    <button onClick={generateRef}>Click me to generate</button>
+                    <button onClick={generateRef} style={{ cursor: "pointer" }}>Click me to generate</button>
                 </div>
             </div>
         </div>
